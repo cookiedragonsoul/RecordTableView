@@ -18,7 +18,6 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
     @IBOutlet weak var barChView: BarChartView!
     @IBOutlet weak var datePickerText: UITextField!
     
-    
     @IBOutlet weak var btn: UIButton!
     
     
