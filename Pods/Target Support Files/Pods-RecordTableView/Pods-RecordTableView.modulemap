@@ -1,0 +1,6 @@
+framework module Pods_RecordTableView {
+  umbrella header "Pods-RecordTableView-umbrella.h"
+
+  export *
+  module * { export * }
+}
