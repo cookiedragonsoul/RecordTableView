@@ -22,10 +22,12 @@ class CoreDataRepository{
         return T(entity: entityDescription, insertInto: nil)
     }
     
-    static func array<T: NSManagedObject>() -> [T]{
+    static func array<T: NSManagedObject>(whereStr:String) -> [T]{
         do{
             let request = NSFetchRequest<T>(entityName: String(describing: T.self))
-            //request.predicate = NSPredicate(format: "winnerNum >= 1")
+            if(whereStr != ""){
+                request.predicate = NSPredicate(format: whereStr)  //where句を設定
+            }
             return try context.fetch(request)
         }catch{
             fatalError()

@@ -159,7 +159,7 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
             "Ashling the Pilgrim",
             "Ashling, the Extinguisher",
             "Asmodeus the Archfiend",
-            "Asmoranomardicadaistinaculdacar",
+            "Asmoranomardica daistinaculdacar",  //空白追加
             "Astarion, the Decadent",
             "Astor, Bearer of Blades",
             "Atarka, World Render",

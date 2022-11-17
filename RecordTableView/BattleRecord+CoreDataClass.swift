@@ -12,7 +12,10 @@ import CoreData
 @objc(BattleRecord)
 public class BattleRecord: NSManagedObject {
     static func getAll() -> [BattleRecord]{
-        return CoreDataRepository.array()
+        return getAll(whereStr:"")
+    }
+    static func getAll(whereStr:String) -> [BattleRecord]{
+        return CoreDataRepository.array(whereStr:whereStr)
     }
     
     static func new(createdDate:Date?,player1Name:String,player2Name:String,player3Name:String,player4Name:String,winnerNum:Int16

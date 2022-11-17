@@ -10,6 +10,7 @@ import Charts
 
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UIAdaptivePresentationControllerDelegate {
     @IBOutlet weak var RecordTableView: UITableView!
+    @IBOutlet weak var recordRegistTipsLabel: UILabel!  //レコードが０件のときのヒントを表示するラベル
     
     let userDefaults = UserDefaults.standard  //ユーザデフォルト
     var recordList:[BattleRecord] = []
@@ -17,8 +18,20 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //ビューの高さを広告と被らないように調整
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.width
+        let viewHeight = screenHeight - 135 - 48 - TabBarController.bannerAdHeight
+        RecordTableView.translatesAutoresizingMaskIntoConstraints = false  //AutoresizingMaskを無効化してAutoLayoutにする
+        RecordTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 135).isActive = true
+        RecordTableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -5).isActive = true
+        RecordTableView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
+        RecordTableView.heightAnchor.constraint(equalToConstant: viewHeight).isActive = true
+        
         userDefaults.set(false, forKey: "isReloadedCharts")  //レポート読み込み済みかのフラグを設定
         recordList = BattleRecord.getAll()
+        
+        recordRegistTipsLabel.isHidden = recordList.count == 0 ? false : true  //レコードが０件だったらレコード登録のヒントを表示する
     }
 
     
@@ -27,15 +40,16 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recordList.count
     }
-    
+    //各セルの値を設定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! TableViewCell//RecordCell
         let r = recordList[indexPath.row]
         
-        cell.textLabel!.textColor = r.winnerNum == 0 ? UIColor.blue : UIColor.green  //優勝者が選択されていたら文字色をみどり
-        
-        cell.rowDeleteButton.tag = indexPath.row  //ボタンのタグに行数を保持させる
         cell.textLabel!.text = r.createdDateStr
+        cell.textLabel!.textColor = r.winnerNum == 0 ? UIColor.blue : UIColor.green  //優勝者が選択されていたら文字色をみどり
+        cell.rowDeleteButton.tag = indexPath.row  //ボタンのタグに行数を保持させる
+        cell.rowDeleteButton.isHidden = false  //「-」ボタンを表示
+        
         return cell
     }
     //tableセルがタップされたときの処理
@@ -65,6 +79,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             CoreDataRepository.delete(self.recordList[rowNum])  //リポジトリーからレコードを削除
             CoreDataRepository.save()  //コミット
             self.recordList = BattleRecord.getAll()  //リストを再取得
+            self.userDefaults.set(false, forKey: "isReloadedCharts")  //レポート読み込み済みかのフラグを設定
             self.RecordTableView.reloadData()  //画面の再描画
         })
         //キャンセルの処理
@@ -97,8 +112,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     //子画面が閉じられたのを検知して実行される
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController){
         recordList = BattleRecord.getAll()  //リストを再取得
+        recordRegistTipsLabel.isHidden = recordList.count == 0 ? false : true  //レコードが０件だったらレコード登録のヒントを表示する
         RecordTableView.reloadData()  //画面のtableCellを更新
     }
+    
     
     //アラートを生成する
     /*func createAlert(msg:String) -> UIAlertController {

@@ -203,6 +203,7 @@ class AddRecordController: UIViewController,UITextFieldDelegate,DataReturn {
         tgtBtn = ""
     }
     
+    //端末のタイムゾーンを考慮した日時をテキストで返す関数
     func getStrDateForCurrentTimeZone(myDate: Date?) -> String {
         if(myDate == nil){ return ""}
         let df = DateFormatter()
