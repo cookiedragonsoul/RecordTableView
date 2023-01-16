@@ -108,7 +108,7 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
         var CMDNumMap:[String:Int] = [:]  //key:コマンダー名、value:使用回数
         var CMDWinNumList:[chartStruct] = []  //コマンダー毎の勝利回数を保持する
         var CMDWinNumMap:[String:Int] = [:]  //key:コマンダー名、value:勝利回数
-        var winCount:[Int] = [0,0,0,0,0]  //プレイヤーごとの勝利回数計算用
+        var playerWinNumMap:[String:Int] = [:]  //key:プレイヤー名、value:勝利回数
         usedNumSum = 0
         winNumSum = 0
         
@@ -124,23 +124,24 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
             CMDNumMap[CMDName3] = CMDNumMap.keys.contains(CMDName3) ? CMDNumMap[CMDName3]! + 1 : 1
             CMDNumMap[CMDName4] = CMDNumMap.keys.contains(CMDName4) ? CMDNumMap[CMDName4]! + 1 : 1
             
-            //コマンダー毎の勝利回数を集計
+            //コマンダー毎、プレイヤー毎の勝利回数を集計
             switch Int(record.winnerNum) {
             case 1:
                 CMDWinNumMap[CMDName1] = CMDWinNumMap.keys.contains(CMDName1) ? CMDWinNumMap[CMDName1]! + 1 : 1
+                playerWinNumMap[record.player1Name!] = playerWinNumMap.keys.contains(record.player1Name!) ? playerWinNumMap[record.player1Name!]! + 1 : 1
             case 2:
                 CMDWinNumMap[CMDName2] = CMDWinNumMap.keys.contains(CMDName2) ? CMDWinNumMap[CMDName2]! + 1 : 1
+                playerWinNumMap[record.player2Name!] = playerWinNumMap.keys.contains(record.player2Name!) ? playerWinNumMap[record.player2Name!]! + 1 : 1
             case 3:
                 CMDWinNumMap[CMDName3] = CMDWinNumMap.keys.contains(CMDName3) ? CMDWinNumMap[CMDName3]! + 1 : 1
+                playerWinNumMap[record.player3Name!] = playerWinNumMap.keys.contains(record.player3Name!) ? playerWinNumMap[record.player3Name!]! + 1 : 1
             case 4:
                 CMDWinNumMap[CMDName4] = CMDWinNumMap.keys.contains(CMDName4) ? CMDWinNumMap[CMDName4]! + 1 : 1
+                playerWinNumMap[record.player4Name!] = playerWinNumMap.keys.contains(record.player4Name!) ? playerWinNumMap[record.player4Name!]! + 1 : 1
             default:
-                print("何もしない")
+                break
             }
             if(Int(record.winnerNum) != 0){ winNumSum += 1 }
-            
-            //プレイヤーごとの勝利回数を集計
-            winCount[Int(record.winnerNum)] += 1
         }
         
         //棒グラフ表示用の配列生成
@@ -169,19 +170,16 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
         }
         
         //円グラフ表示用の配列生成
-        pieEntries = [
-            PieChartDataEntry(value:Double(winCount[1]), label:"Player1"),
-            PieChartDataEntry(value:Double(winCount[2]), label:"Player2"),
-            PieChartDataEntry(value:Double(winCount[3]), label:"Player3"),
-            PieChartDataEntry(value:Double(winCount[4]), label:"Player4")
-        ]
+        for (key,value) in playerWinNumMap{
+            pieEntries.append(PieChartDataEntry(value:Double(value), label:key))
+        }
         pieEntries.sort{$0.value > $1.value}  //降順に並び替え
     }
     
     
     //円グラフを生成する関数
     func createPieChart(){
-        guard pieEntries[0].value != 0 || pieEntries[1].value != 0 || pieEntries[2].value != 0 || pieEntries[3].value != 0 else {
+        guard pieEntries.count != 0 && (pieEntries[0].value != 0 || pieEntries[1].value != 0 || pieEntries[2].value != 0 || pieEntries[3].value != 0) else {
             piChView.data = nil
             return
         }
@@ -335,9 +333,8 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
     //ピッカーの表示する列数を設定
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         //ピッカー表示時に、テキストフィールドに初期値を設定する
-        print("ピッカーの設定通ったよ")
         if(pickerY == "" || pickerM == ""){
-            pickerTempY = datePickValY[0]
+            pickerTempY = datePickValY.last!
             pickerTempM = datePickValM[0]
         }else{
             pickerTempY = pickerY
@@ -463,7 +460,6 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
                 resultStr.append(beforeAddingLen == 0 ? word : " " + word)
                 beforeAddingLen = sumLen
             }
-            
         }
         return resultStr
     }
@@ -511,7 +507,7 @@ class ReportViewController: UIViewController,UIPickerViewDelegate, UIPickerViewD
         let tabBarHeight = 48.0
         let screenHeight = UIScreen.main.bounds.height
         let screenWidth = UIScreen.main.bounds.width
-        let viewHeight = screenHeight - topHeight - tabBarHeight - TabBarController.bannerAdHeight
+        let viewHeight = screenHeight - topHeight - tabBarHeight - TabBarController.bannerAdHeight - 10
         chView.translatesAutoresizingMaskIntoConstraints = false  //AutoresizingMaskを無効化してAutoLayoutにする
         chView.topAnchor.constraint(equalTo: view.topAnchor, constant: topHeight).isActive = true
         chView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true

@@ -18,6 +18,8 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
     
     private var allDatas = [String]()
     private var filterdDatas = [String]()
+    var paramLeader:String = ""  //親画面からのパラメータ
+    var selectedRow:Int? = nil
     
     var delegate: DataReturn?  //親に値を渡す用
     
@@ -26,9 +28,20 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
         super.viewDidLoad()
         searchLeaderLabel.placeholder = "Search..."
         
-        allDatas = createCMDList()  //全リーダー名を呼び出して配列に設定
+        //allDatas = createCMDList()  //全リーダー名を呼び出して配列に設定
+        allDatas = TabBarController.commanderNameList  //全リーダー名を保持
         
         searchLeaderLabel.addTarget(self,action: #selector(textFieldDidChange(_:)), for:.editingChanged)  //値が変わるたびに呼び出す関数を設定
+        
+        //親画面のテキストフィールドに値があれば、絞り込み実施と、その行を選択状態にする
+        if(paramLeader != ""){
+            searchLeaderLabel.text = paramLeader
+            filterText(paramLeader)  //絞り込み
+            if(filterdDatas.contains(paramLeader)){
+                leaderTableView.selectRow(at: IndexPath(row:0, section:0), animated:true, scrollPosition:.none)  //0番目を選択状態にする
+                selectedRow = 0
+            }
+        }
         
         searchLeaderLabel.becomeFirstResponder()  //フォーカスをオンにする
     }
@@ -55,21 +68,45 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
     
     //セルが選択されたときに実行される処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedName :String = ""  //選択されたリーダー名を保持する
-        if(searchLeaderLabel.text! == ""){
-            selectedName = allDatas[indexPath.row]
+        let idx = indexPath.row
+        
+        //選択済みの行をタップした場合は選択を解除する
+        if(selectedRow != nil && selectedRow == idx){
+            tableView.deselectRow(at: IndexPath(row: idx, section: 0), animated: true)  //選択解除
+            selectedRow = nil
         }else{
-            selectedName = filterdDatas[indexPath.row]
+            selectedRow = idx
         }
-        delegate?.store(data: selectedName)  //選択したリーダー名をデリゲートに設定(モーダル画面を閉じたあと親側で取得する)
-        dismiss(animated: true, completion: nil)  //モーダル画面を閉じる
+        
+        /*
+        if(searchLeaderLabel.text! == ""){
+            searchLeaderLabel.text = allDatas[idx]
+        }else{
+            searchLeaderLabel.text = filterdDatas[idx]
+        }
+        filterText(searchLeaderLabel.text!)  //フィルタ実行
+        */
     }
     
     //テキストフィールドの値が変わるたびに呼び出される処理
     @objc func textFieldDidChange(_ textField: UITextField){
         if let text = textField.text{
             filterText(text)
+            selectedRow = nil
         }
+    }
+    
+    //Doneボタン押下時の処理
+    @IBAction func doneAct(_ sender: Any) {
+        var selectedName = ""
+        
+        if let idx = leaderTableView.indexPathForSelectedRow {
+            selectedName = searchLeaderLabel.text! == "" ? allDatas[idx.row] : filterdDatas[idx.row]
+        }
+        
+        delegate?.store(data: selectedName)  //選択したリーダー名をデリゲートに設定(モーダル画面を閉じたあと親側で取得する)
+        dismiss(animated: true, completion: nil)  //モーダル画面を閉じる
+        
     }
     
     //-------------------------関数------------------------
@@ -86,7 +123,7 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     //全リーダー名を配列にする関数
-    func createCMDList() -> [String] {
+    /*func createCMDList() -> [String] {
         let cmdList = [
             "Abdel Adrian, Gorion's Ward",
             "Abomination of Llanowar",
@@ -1373,6 +1410,6 @@ class SearchLeaderController: UIViewController,UITableViewDelegate,UITableViewDa
             "Zurzoth, Chaos Rider",
         ]
         return cmdList
-    }
+    }*/
 
 }

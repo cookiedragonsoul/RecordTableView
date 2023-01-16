@@ -18,6 +18,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //ビューの高さを広告と被らないように調整
         let screenHeight = UIScreen.main.bounds.height
         let screenWidth = UIScreen.main.bounds.width
@@ -42,7 +43,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     //各セルの値を設定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! TableViewCell//RecordCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! TableViewCell
         let r = recordList[indexPath.row]
         
         cell.textLabel!.text = r.createdDateStr
@@ -75,7 +76,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let alert:UIAlertController = UIAlertController(title:"Delete record?", message:"targetRow：\(rowNum)", preferredStyle:UIAlertController.Style.alert)
         //OKボタンの処理
         let confirmAction:UIAlertAction = UIAlertAction(title:"OK!", style:UIAlertAction.Style.default, handler:{ (acation:UIAlertAction!) -> Void in
-            print("削除実行")
             CoreDataRepository.delete(self.recordList[rowNum])  //リポジトリーからレコードを削除
             CoreDataRepository.save()  //コミット
             self.recordList = BattleRecord.getAll()  //リストを再取得

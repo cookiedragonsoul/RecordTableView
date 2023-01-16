@@ -22,12 +22,20 @@ class CoreDataRepository{
         return T(entity: entityDescription, insertInto: nil)
     }
     
-    static func array<T: NSManagedObject>(whereStr:String) -> [T]{
+    static func array<T: NSManagedObject>(whereStr:String, fetchLimit:Int?, asc:Bool) -> [T]{
         do{
             let request = NSFetchRequest<T>(entityName: String(describing: T.self))
+            //検索条件を指定
             if(whereStr != ""){
-                request.predicate = NSPredicate(format: whereStr)  //where句を設定
+                request.predicate = NSPredicate(format: whereStr)
             }
+            //取得件数上限を指定
+            if let limit = fetchLimit {
+                request.fetchLimit = limit
+            }
+            //取得順序(昇順/降順)を指定
+            request.sortDescriptors = [NSSortDescriptor(key:"createdDate", ascending:asc)]
+            
             return try context.fetch(request)
         }catch{
             fatalError()

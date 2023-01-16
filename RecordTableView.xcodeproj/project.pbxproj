@@ -23,6 +23,7 @@
 		76517571290647DD00EED9F2 /* BarReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76517570290647DD00EED9F2 /* BarReportView.swift */; };
 		7680FD1D2909707100B4474F /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7680FD1C2909707100B4474F /* ReportViewController.swift */; };
 		7680FD3F2910F96200B4474F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7680FD3E2910F96200B4474F /* TabBarController.swift */; };
+		76BC2063292778D3000C0B61 /* commanderNameList.csv in Resources */ = {isa = PBXBuildFile; fileRef = 76BC2062292778D3000C0B61 /* commanderNameList.csv */; };
 		8BFF9851937C370DE2E047C1 /* Pods_RecordTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8F5D5D7E3F1DDCCFB448C03 /* Pods_RecordTableView.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		76517570290647DD00EED9F2 /* BarReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarReportView.swift; sourceTree = "<group>"; };
 		7680FD1C2909707100B4474F /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		7680FD3E2910F96200B4474F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = RecordTableView/TabBarController.swift; sourceTree = "<group>"; };
+		76BC2062292778D3000C0B61 /* commanderNameList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = commanderNameList.csv; sourceTree = "<group>"; };
 		88A15CC57174634ADFA66BF6 /* Pods-RecordTableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecordTableView.debug.xcconfig"; path = "Target Support Files/Pods-RecordTableView/Pods-RecordTableView.debug.xcconfig"; sourceTree = "<group>"; };
 		D8F5D5D7E3F1DDCCFB448C03 /* Pods_RecordTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecordTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -74,6 +76,7 @@
 		7651753F2902D1A200EED9F2 = {
 			isa = PBXGroup;
 			children = (
+				76BC2064292778EF000C0B61 /* ExternalFiles */,
 				7680FD3E2910F96200B4474F /* TabBarController.swift */,
 				7651756C2903D1CC00EED9F2 /* TableViewCell.swift */,
 				765175622902D29800EED9F2 /* BattleRecord+CoreDataClass.swift */,
@@ -119,6 +122,14 @@
 				7680FD1C2909707100B4474F /* ReportViewController.swift */,
 			);
 			path = ReportView;
+			sourceTree = "<group>";
+		};
+		76BC2064292778EF000C0B61 /* ExternalFiles */ = {
+			isa = PBXGroup;
+			children = (
+				76BC2062292778D3000C0B61 /* commanderNameList.csv */,
+			);
+			name = ExternalFiles;
 			sourceTree = "<group>";
 		};
 		E976FBCD2A893A2E933C64BD /* Frameworks */ = {
@@ -191,6 +202,7 @@
 			files = (
 				7651755B2902D1A500EED9F2 /* LaunchScreen.storyboard in Resources */,
 				765175582902D1A500EED9F2 /* Assets.xcassets in Resources */,
+				76BC2063292778D3000C0B61 /* commanderNameList.csv in Resources */,
 				765175532902D1A200EED9F2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,8 +422,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -440,8 +452,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
